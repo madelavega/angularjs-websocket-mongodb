@@ -3,23 +3,9 @@ var UsuariosCtrl = app.controller("UsuariosCtrl",["$scope", "connector", functio
     $scope.usuario = {};
     $scope.data = [];
 
-   /*$scope.data = [{
-        nombre : 'Manuel',
-        apellido : 'de la Vega',
-        nif: 75883347
-    },{
-        nombre : 'Inma',
-        apellido : 'Huertas',
-        nif: 45454545
-    },{
-        nombre : 'Ataulfo',
-        apellido : 'Pérez',
-        nif: 343435
-    }]; */
-
     $scope.load = function () {
         console.log('buscamos usuarios...');
-        connector.sendMessage('findusers',{});
+        connector.sendMessage('usuarios/find',{});
     }
 
     $scope.reset = function() {
@@ -28,17 +14,17 @@ var UsuariosCtrl = app.controller("UsuariosCtrl",["$scope", "connector", functio
 
     $scope.save = function(usuario) {
         $scope.usuario = angular.copy(usuario);
-        connector.sendMessage('usuarioadded',usuario);
+        connector.sendMessage('usuarios/add',usuario);
     };
 
-    connector.on('findusers',function (usuarios) {
+    connector.on('usuarios/find',function (usuarios) {
         console.log('Recibimos usuarios...');
         $scope.$apply(function () {
             $scope.data = usuarios;
         });
     });
 
-    connector.on('usuarioadded',function (usuario) {
+    connector.on('usuarios/add',function (usuario) {
         $scope.$apply(function () {
             $scope.data.push(usuario);
         });

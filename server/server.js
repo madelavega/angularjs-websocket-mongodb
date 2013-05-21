@@ -6,7 +6,7 @@ var config = {
     PORT : 8888
 }
 
-var UsuarioMgr = require('./app/UsuarioMgr').UsuarioMgr;
+var Controller = require('./app/Controller').Controller;
 var file = new (nodeStatic.Server)('./../client/');
 
 var server = http.createServer(function (request, response) {
@@ -38,6 +38,7 @@ function originIsAllowed(origin) {
 }
 
 wsServer.on('request', function(request) {
+    var manager, connection;
     if (!originIsAllowed(request.origin)) {
         // Make sure we only accept requests from an allowed origin
         request.reject();
@@ -45,25 +46,19 @@ wsServer.on('request', function(request) {
         return;
     }
 
-    var connection = request.accept('echo-protocol', request.origin);
+    connection = request.accept('echo-protocol', request.origin);
     console.log((new Date()) + ' Conexión aceptada.');
     connection.on('message', function(message) {
-        var data;
+        var data, type;
         if (message.type === 'utf8') {
             console.log('data in UTF-8');
             data = JSON.parse(message.utf8Data);
-            (UsuarioMgr.handleMessage(data.type))(data.data);
+            type = data.type;
+
+            //get the manager and threat the message
+            manager = Controller.getManager(type);
+            (manager.handleMessage(type))(connection, data.data);
         }
-    });
-
-    UsuarioMgr.on('add', function (usuario) {
-        console.log('onAdd ' + JSON.stringify(usuario));
-        connection.sendUTF(JSON.stringify({usuarioadded : usuario}));
-    });
-
-    UsuarioMgr.on('find', function (usuarios) {
-        console.log('onFind ' + JSON.stringify(usuarios));
-        connection.sendUTF(JSON.stringify({findusers : usuarios}));
     });
 
     connection.on('close', function(reasonCode, description) {

@@ -14,7 +14,7 @@ exports.MongoConnector.getConnection = function () {
     var d = Q.defer();
     /*
 
-    Con promesas evitamos tener que repetir la siguiente secuencia de callbacks
+    //Con promesas evitamos tener que repetir la siguiente secuencia de callbacks
 
     db.open(function(err, client) {
         client.authenticate('madelavega', 'wstesting', function(err, success) {
