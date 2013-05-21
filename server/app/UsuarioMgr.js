@@ -47,20 +47,8 @@ exports.UsuarioMgr = (function() {
 
         */
 
-        MongoConnector.getConnection().then(function (client,db) {
-            var usuarios = [];
-            var stream  = client.collection('usuarios').find(
-                //{ },
-                //{ nombre: 1, apellido: 1, nif: 1, _id: 0 }
-            ).stream();
-
-            stream.on('data', function(item) {
-                usuarios.push(item);
-            });
-            stream.on('end', function() {
-                fireEvent('find',usuarios);
-                client.close();
-            });
+        UsuarioDAO.find().then(function(usuarios) {
+            fireEvent('find',usuarios);
         });
     };
 
