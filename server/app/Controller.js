@@ -1,4 +1,4 @@
-var UsuarioMgr = require('./UsuarioMgr').UsuarioMgr;
+var UsuarioMgr = require('./managers/UsuarioMgr').UsuarioMgr;
 
 exports.Controller = (function() {
     var getManager, managers;

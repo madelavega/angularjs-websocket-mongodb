@@ -1,4 +1,4 @@
-var UsuarioDAO = require('./dao/UsuarioDAO').UsuarioDAO;
+var UsuarioDAO = require('./../dao/UsuarioDAO').UsuarioDAO;
 
 exports.UsuarioMgr = (function() {
     var find, add, messages;
@@ -14,12 +14,12 @@ exports.UsuarioMgr = (function() {
         UsuarioDAO.find().then(function(usuarios) {
             connection.sendUTF(JSON.stringify({"usuarios/find" : usuarios}));
         });
-    };
+    }
 
     messages = {
         add :  add,
         find   : find
-    };
+    }
 
     handleMessage = function (messageType) {
         var message = messageType.split("/");
@@ -27,7 +27,7 @@ exports.UsuarioMgr = (function() {
         return function (connection, data) {
             messages[message](connection, data);
         }
-    };
+    }
 
     return {
         add : add,
