@@ -1,11 +1,15 @@
-var UsuarioMgr = require('./managers/UsuarioMgr').UsuarioMgr;
-
 exports.Controller = (function() {
-    var getManager, managers;
+    var getManager, managers = {}, manager, managerPathList, managerPath, managerType, path, splittedPath;
 
-    managers = {
-        usuarios : UsuarioMgr
-    };
+    //loading managers from app/config/managers.json
+    managerPathList = require("./config/managers.json");
+    for (managerType in managerPathList) {
+        if(managerPathList.hasOwnProperty(managerType)) {
+            path = managerPathList[managerType];
+            splittedPath = path.split("/");
+            managers[managerType] = require(path)[splittedPath[splittedPath.length-1]];
+        }
+    }
 
     getManager = function (message) {
         var message = message.split("/"), manager;

@@ -1,11 +1,12 @@
+var DbConfig = require("./../config/database.json");
 var mongo = require('mongodb');
 var Q = require('q');
 var Server = mongo.Server;
 var Db = mongo.Db;
 
 
-var server = new Server('ds027348.mongolab.com', 27348, {auto_reconnect : true});
-var db = new Db('madelavega', server);
+var server = new Server(DbConfig.url, DbConfig.port, {auto_reconnect : true});
+var db = new Db(DbConfig.dbName, server);
 
 
 exports.MongoConnector = {};
@@ -46,7 +47,7 @@ exports.MongoConnector.getConnection = function () {
 
 exports.MongoConnector.authenticate = function (client) {
     var d = Q.defer();
-    client.authenticate('madelavega', 'wstesting', function(err, success) {
+    client.authenticate(DbConfig.user, DbConfig.password, function(err, success) {
         if(success) {
             d.resolve(client);
         } else {
