@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
+        <script src="/js/vendor/angular/angular.js"></script>
+        <script src="/js/app/app.js"></script>
+        <script src="/js/app/controllers/UsuariosCtrl.js"></script>
+
+        <style type="text/css">
+            form input.ng-invalid.ng-dirty {
+                background-color: red;
+            }
+
+            .css-form input.ng-valid.ng-dirty {
+                background-color: red;
+            }
+        </style>
+
+    </head>
+    <body ng-app="app">
+         <div ng-controller="UsuariosCtrl">
+             <table>
+                 <tr ng-repeat="dato in data">
+                     <td ng-repeat="item in dato">{{item}}</td>
+                 </tr>
+             </table>            <br /><br />
+             <form novalidate>
+                 nombre: <input type="text" ng-model="usuario.nombre" required/><br />
+                 apellido: <input ng-model="usuario.apellido" required/><br />
+                 nif: <input type="text" ng-model="usuario.nif" /><br />
+                 <button ng-click="reset()">Resetear</button>
+                 <button ng-click="save(usuario)" ng-disabled="form.$invalid">Guardar</button>
+             </form>
+         </div>
+    </body>
+</html>
