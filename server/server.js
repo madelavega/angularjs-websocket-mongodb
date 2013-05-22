@@ -13,14 +13,14 @@ var server = http.createServer(function (request, response) {
     request.addListener('end', function () {
         file.serve(request, response, function(err, res) {
             if (err) {
-                console.error('[ERROR] Se ha producido el siguiente error: ' + err.message);
+                console.error('[ERROR] ' + err.message);
                 response.writeHead(err.status, err.headers);
                 response.end();
             }});
     });
 }).listen(config.PORT);
 
-console.log('Escuchando en puerto ' + config.PORT);
+console.log('Listening on ' + config.PORT);
 
 wsServer = new WebSocketServer({
     httpServer: server,
@@ -33,20 +33,22 @@ wsServer = new WebSocketServer({
 });
 
 function originIsAllowed(origin) {
-    // put logic here to detect whether the specified origin is allowed.
+    //TODO put logic here to detect whether the specified origin is allowed.
     return true;
 }
 
 wsServer.on('request', function(request) {
-    var manager, connection;
-    if (!originIsAllowed(request.origin)) {
+    var manager, connection, origin;
+
+    origin = request.origin;
+    if (!originIsAllowed(origin)) {
         // Make sure we only accept requests from an allowed origin
         request.reject();
-        console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
+        console.log((new Date()) + ' Connection from origin ' + origin + ' rejected.');
         return;
     }
 
-    connection = request.accept('echo-protocol', request.origin);
+    connection = request.accept('echo-protocol', origin);
     console.log((new Date()) + ' Conexión aceptada.');
     connection.on('message', function(message) {
         var data, type;
@@ -57,9 +59,16 @@ wsServer.on('request', function(request) {
 
             //get the manager and threat the message
             manager = Controller.getManager(type);
-            (manager.handleMessage(type))(connection, data.data);
+            (manager.handleMessage(type))(data.data).then(function (result) {
+                if(result.doBroadCasting) {
+                    wsServer.broadcastUTF(JSON.stringify(result.data));
+                } else {
+                    connection.sendUTF(JSON.stringify(result.data));
+                }
+            });
         }
     });
+
 
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');

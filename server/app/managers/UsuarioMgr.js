@@ -1,31 +1,42 @@
 var UsuarioDAO = require('./../dao/UsuarioDAO').UsuarioDAO;
+var Q = require('q');
 
 exports.UsuarioMgr = (function() {
     var find, add, messages;
 
 
-    add = function (connection, data) {
+    add = function (data) {
+        var d = Q.defer();
         UsuarioDAO.addUser(data).then(function(savedData) {
-            connection.sendUTF(JSON.stringify({"usuarios/add" : savedData}));
+            d.resolve({"usuarios/add" : savedData});
         });
+        return d.promise;
     }
 
-    find = function (connection, data) {
+    find = function (data) {
+        var d = Q.defer();
         UsuarioDAO.find().then(function(usuarios) {
-            connection.sendUTF(JSON.stringify({"usuarios/find" : usuarios}));
+            d.resolve({"usuarios/find" : usuarios});
         });
+        return d.promise;
     }
+
 
     messages = {
-        add :  add,
-        find   : find
+        add :  { fn : add, doBroadCasting : true},
+        find   : { fn : find, doBroadCasting : false}
     }
 
     handleMessage = function (messageType) {
         var message = messageType.split("/");
         message =  message[message.length-1];
-        return function (connection, data) {
-            messages[message](connection, data);
+        return function (data) {
+            var d = Q.defer(), doBroadCasting;
+            doBroadCasting =  messages[message].doBroadCasting;
+            messages[message].fn(data).then(function (result) {
+                d.resolve({doBroadCasting : doBroadCasting, data : result});
+            });
+            return d.promise;
         }
     }
 

@@ -1,16 +1,16 @@
 var app = angular.module("app", []);
 
 app.factory("connector", function () {
-    var that = this, connection = new WebSocket("ws://localhost:8888", 'echo-protocol'), suscriptors = [],
-        handleMessage, fireEvent;
+    var that = this, connection = new WebSocket("ws://localhost:8888", 'echo-protocol'),
+        suscriptors = [], handleMessage, fireEvent;
 
     connection.onopen = function () {
-        console.log('Conexión con websocket abierta...');
+        console.log('WS connection OPEN...');
         fireEvent('connectionopen');
     };
 
     connection.onclose = function () {
-        console.log('Conexión con websocket CERRADA.');
+        console.log('WS connection CLOSED.');
     };
 
 
@@ -27,11 +27,10 @@ app.factory("connector", function () {
     fireEvent = function (event) {
         var len = suscriptors.length, evtHandler,
             args = Array.prototype.slice.call(arguments);
-        console.log('Lanzamos evento ' + event);
+        console.log(event + " FIRED");
         while(len--) {
             evtHandler = suscriptors[len];
             if(typeof evtHandler[event] === 'function') {
-                console.log('Ejecutamos ' + event);
                 evtHandler[event].apply(that, args.slice(1, args.length));
             }
         }
@@ -50,7 +49,6 @@ app.factory("connector", function () {
         },
         on : function (event, handler) {
             var evtHandler = {};
-            console.log('Nos suscribimos al evento ' + event);
             evtHandler[event] = handler;
             suscriptors.push(evtHandler);
         }
