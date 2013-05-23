@@ -1,15 +1,14 @@
 exports.Controller = (function() {
     var getManager, managers = {}, manager, managerPathList,
-        managerPath, managerType, path, splittedPath;
+        managerPath, managerType, path;
 
     //loading managers from app/config/managers.json
     managerPathList = require("./config/managers.json");
     for (managerType in managerPathList) {
         if(managerPathList.hasOwnProperty(managerType)) {
             path = "./managers/" + managerPathList[managerType];
-            splittedPath = path.split("/");
             //managers must export an object with the same name of the file
-            managers[managerType] = require(path)[splittedPath[splittedPath.length-1]];
+            managers[managerType] = new (require(path))();
         }
     }
 

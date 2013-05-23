@@ -20,7 +20,6 @@ exports.UsuarioDAO = (function() {
 
     addUser = function (data) {
         var d = Q.defer();
-        console.log('Se añade el usuario ' + data.nombre);
 
         MongoConnector.getConnection()
         .then(function (client) {
@@ -39,6 +38,7 @@ exports.UsuarioDAO = (function() {
         usuarios = [];
 
         stream  = client.collection('usuarios').find(
+            //TODO add filter parameters
             //{ },
             //{ nombre: 1, apellido: 1, nif: 1, _id: 0 }
         ).stream();
