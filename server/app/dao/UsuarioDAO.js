@@ -1,5 +1,5 @@
-var MongoConnector = require('./../data/MongoConnector').MongoConnector;
-var Q = require('q');
+var MongoConnector = require('./../data/MongoConnector').MongoConnector,
+    Q = require('q');
 
 exports.UsuarioDAO = (function() {
     var find, addUser, doAddUser;

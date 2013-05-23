@@ -1,15 +1,16 @@
-var http = require('http');
-var WebSocketServer = require('websocket').server;
-var nodeStatic = require('node-static');
-var wsServer;
-var config = {
+var http = require('http'),
+    WebSocketServer = require('websocket').server,
+    nodeStatic = require('node-static'),
+    Controller, file, server, config, wsServer;
+
+Controller = require('./app/Controller').Controller;
+file = new (nodeStatic.Server)('./../client/');
+
+config = {
     PORT : 8888
 }
 
-var Controller = require('./app/Controller').Controller;
-var file = new (nodeStatic.Server)('./../client/');
-
-var server = http.createServer(function (request, response) {
+server = http.createServer(function (request, response) {
     request.addListener('end', function () {
         file.serve(request, response, function(err, res) {
             if (err) {
@@ -58,7 +59,7 @@ wsServer.on('request', function(request) {
 
             //get the manager and threat the message
             manager = Controller.getManager(type);
-            //this closure returns the function of the manager to execute
+            //this closure returned is the function of the manager to execute
             mgrFunction = manager.handleMessage(type);
             mgrFunction(data.data).then(function (result) {
                 if(result.doBroadCasting) {
@@ -69,7 +70,6 @@ wsServer.on('request', function(request) {
             });
         }
     });
-
 
     connection.on('close', function(reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');

@@ -1,1 +1,6 @@
-This file was created by JetBrains WebStorm 6.0.1 for binding GitHub repository
+The propose of these application is offer an entire application architecture written on javascript from both sides (front-end and backend),
+based on angularjs and nodejs.
+
+The communication will be based on websockets connections, to realize CRUDS operations.
+
+The database in this application is a MongoDB hosted in www.mongolab.com

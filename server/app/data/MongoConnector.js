@@ -1,8 +1,10 @@
-var DbConfig = require("./../config/database.json");
-var mongo = require('mongodb');
-var Q = require('q');
-var Server = mongo.Server;
-var Db = mongo.Db;
+var DbConfig = require("./../config/database.json"),
+    mongo = require('mongodb'),
+    Q = require('q'),
+    Server, Db, server, db;
+
+Server = mongo.Server;
+Db = mongo.Db;
 
 
 var server = new Server(DbConfig.url, DbConfig.port, {auto_reconnect : true});
@@ -15,7 +17,7 @@ exports.MongoConnector.getConnection = function () {
     var d = Q.defer();
     /*
 
-    //Con promesas evitamos tener que repetir la siguiente secuencia de callbacks
+    //with promises, it will be avoided manage these callbacks
 
     db.open(function(err, client) {
         client.authenticate('madelavega', 'wstesting', function(err, success) {
@@ -34,8 +36,6 @@ exports.MongoConnector.getConnection = function () {
 
     */
 
-    //devolvemos una promesa, la que cuando se resuelva correctamente contendrá el cliente para realizar la sentencia
-    //requerida
     this.open()
     .then(this.authenticate)
     .then(function (client) {
