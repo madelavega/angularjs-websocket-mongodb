@@ -22,18 +22,28 @@ exports.UsuarioMgr = (function() {
     }
 
 
+    //contains the functions allowed and if they will do a broadcasting. All the functions declared in fn property
+    //will be promises
     messages = {
         add :  { fn : add, doBroadCasting : true},
         find   : { fn : find, doBroadCasting : false}
     }
 
     handleMessage = function (messageType) {
-        var message = messageType.split("/");
+        var message = messageType.split("/"), matchedProperty;
         message =  message[message.length-1];
+
+        //return the closure to execute the manager method
         return function (data) {
             var d = Q.defer(), doBroadCasting;
-            doBroadCasting =  messages[message].doBroadCasting;
-            messages[message].fn(data).then(function (result) {
+            //the matched propertie in manager messages
+            matchedProperty = messages[message];
+
+            //check if it would be broadcasting when finish
+            doBroadCasting =  matchedMessage.doBroadCasting;
+
+            //the matched function will be execute with the data passed in the closure.
+            matchedProperty.fn(data).then(function (result) {
                 d.resolve({doBroadCasting : doBroadCasting, data : result});
             });
             return d.promise;

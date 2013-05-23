@@ -49,17 +49,18 @@ wsServer.on('request', function(request) {
     }
 
     connection = request.accept('echo-protocol', origin);
-    console.log((new Date()) + ' Conexión aceptada.');
+    console.log((new Date()) + ' Connection accepted.');
     connection.on('message', function(message) {
-        var data, type;
+        var data, type, mgrFunction;
         if (message.type === 'utf8') {
-            console.log('data in UTF-8');
             data = JSON.parse(message.utf8Data);
             type = data.type;
 
             //get the manager and threat the message
             manager = Controller.getManager(type);
-            (manager.handleMessage(type))(data.data).then(function (result) {
+            //this closure returns the function of the manager to execute
+            mgrFunction = manager.handleMessage(type);
+            mgrFunction(data.data).then(function (result) {
                 if(result.doBroadCasting) {
                     wsServer.broadcastUTF(JSON.stringify(result.data));
                 } else {
