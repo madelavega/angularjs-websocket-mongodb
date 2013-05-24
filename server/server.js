@@ -1,30 +1,35 @@
 var http = require('http'),
     WebSocketServer = require('websocket').server,
     nodeStatic = require('node-static'),
-    Controller, file, server, config, wsServer;
+    Controller,
+    file,
+    server,
+    config,
+    wsServer;
 
 Controller = require('./app/Controller').Controller;
 file = new (nodeStatic.Server)('./../client/');
 
 config = {
-    PORT : 8888
-}
+    PORT: 8888
+};
 
 server = http.createServer(function (request, response) {
     request.addListener('end', function () {
-        file.serve(request, response, function(err, res) {
+        file.serve(request, response, function (err, res) {
             if (err) {
                 console.error('[ERROR] ' + err.message);
                 response.writeHead(err.status, err.headers);
                 response.end();
-            }});
+            }
+        });
     });
 }).listen(config.PORT);
 
 console.log('Listening on ' + config.PORT);
 
 wsServer = new WebSocketServer({
-    httpServer: server,
+    httpServer           : server,
     // You should not use autoAcceptConnections for production
     // applications, as it defeats all standard cross-origin protection
     // facilities built into the protocol and the browser.  You should
@@ -38,7 +43,7 @@ function originIsAllowed(origin) {
     return true;
 }
 
-wsServer.on('request', function(request) {
+wsServer.on('request', function (request) {
     var manager, connection, origin;
 
     origin = request.origin;
@@ -51,7 +56,7 @@ wsServer.on('request', function(request) {
 
     connection = request.accept('echo-protocol', origin);
     console.log((new Date()) + ' Connection accepted.');
-    connection.on('message', function(message) {
+    connection.on('message', function (message) {
         var data, type, mgrFunction;
         if (message.type === 'utf8') {
             data = JSON.parse(message.utf8Data);
@@ -62,7 +67,7 @@ wsServer.on('request', function(request) {
             //this closure returned is the function of the manager to execute
             mgrFunction = manager.handleMessage(type);
             mgrFunction(data.data).then(function (result) {
-                if(result.doBroadCasting) {
+                if (result.doBroadCasting) {
                     wsServer.broadcastUTF(JSON.stringify(result.data));
                 } else {
                     connection.sendUTF(JSON.stringify(result.data));
@@ -71,7 +76,7 @@ wsServer.on('request', function(request) {
         }
     });
 
-    connection.on('close', function(reasonCode, description) {
+    connection.on('close', function (reasonCode, description) {
         console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
     });
 });
