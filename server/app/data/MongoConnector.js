@@ -18,26 +18,6 @@ exports.MongoConnector = {};
 
 exports.MongoConnector.getConnection = function () {
     var d = Q.defer();
-    /*
-
-     //with promises, it will be avoided manage these callbacks
-
-     db.open(function(err, client) {
-     client.authenticate('madelavega', 'wstesting', function(err, success) {
-     if(success){
-     client.collection('usuarios').insert(data,{multi:true},function(error) {
-     if(error) {
-
-     } else {
-     fireEvent('add',data);
-     client.close();
-     }
-     });
-     }
-     });
-     });
-
-     */
 
     this.open()
         .then(this.authenticate)
