@@ -4,3 +4,7 @@ based on angularjs and nodejs.
 The communication will be based on websockets connections, to realize CRUDS operations.
 
 The database in this application is a MongoDB hosted in www.mongolab.com
+
+Tested in Google Chrome
+
+Front-End building with Grunt
