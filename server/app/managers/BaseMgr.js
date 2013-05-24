@@ -3,6 +3,7 @@ var Q = require('q');
 function BaseMgr() {
 }
 
+//parse messages from websockets connection
 BaseMgr.prototype.handleMessage = function (messageType) {
     var message = messageType.split("/"), matchedProperty, messages = this.messages;
     message = message[message.length - 1];
