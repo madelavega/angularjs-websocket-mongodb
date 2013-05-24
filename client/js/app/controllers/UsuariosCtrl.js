@@ -1,36 +1,36 @@
-var UsuariosCtrl = app.controller("UsuariosCtrl",["$scope", "connector", function ($scope, connector) {
+var UsuariosCtrl = angular.module('app').controller("UsuariosCtrl", ["$scope", "websocket", function ($scope, websocket) {
 
     $scope.usuario = {};
     $scope.data = [];
 
     $scope.load = function () {
         console.log('buscamos usuarios...');
-        connector.sendMessage('usuarios/find',{});
-    }
-
-    $scope.reset = function() {
-        $scope.usuario = angular.copy($scope.usuario);
-    }
-
-    $scope.save = function(usuario) {
-        $scope.usuario = angular.copy(usuario);
-        connector.sendMessage('usuarios/add',usuario);
+        websocket.sendMessage('usuarios/find', {});
     };
 
-    connector.on('usuarios/find',function (usuarios) {
-        console.log('Recibimos usuarios...');
-        $scope.$apply(function () {
-            $scope.data = usuarios;
-        });
-    });
+    $scope.reset = function () {
+        $scope.usuario = angular.copy($scope.usuario);
+    };
 
-    connector.on('usuarios/add',function (usuario) {
-        $scope.$apply(function () {
-            $scope.data.push(usuario);
-        });
-    });
+    $scope.save = function (usuario) {
+        $scope.usuario = angular.copy(usuario);
+        websocket.sendMessage('usuarios/add', usuario);
+    };
 
-    connector.on('connectionopen', function () {
+    websocket.on('connectionopen', function () {
         $scope.load();
+
+        websocket.on('usuarios/find', function (usuarios) {
+            console.log('Recibimos usuarios...');
+            $scope.$apply(function () {
+                $scope.data = usuarios;
+            });
+        });
+
+        websocket.on('usuarios/add', function (usuario) {
+            $scope.$apply(function () {
+                $scope.data.push(usuario);
+            });
+        });
     });
 }]);
