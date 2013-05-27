@@ -3,7 +3,7 @@ angular.module("directives", []).
         return {
             restrict  : "E",
             transclude: true,
-            template  : "<table>\n    <tr ng-transclude></tr>\n    <tr ng-repeat=\"record in data\">\n        <td ng-repeat=\"field in record\">{{field}}</td>\n    </tr>\n</table>",
+            template  : "<table>\n    <tr ng-transclude></tr>\n    <tr ng-repeat=\"record in data\">\n        <td ng-repeat=\"column in columns\">{{record[column]}}</td>\n    </tr>\n</table>",
             scope     : {
                 data: "="
             },
@@ -12,10 +12,7 @@ angular.module("directives", []).
                 this.addHeader = function (header) {
                     $scope.columns.push(header);
                 };
-            }],
-            link : function (scope, iElement, iAttrs) {
-                debugger
-            }
+            }]
         };
     }).
     directive("cdDatagridColumns", function () {
