@@ -1,4 +1,4 @@
-The propose of these application is offer an entire application architecture written on javascript from both sides (front-end and backend),
+The propose of this application is offer an entire application architecture written on javascript from both sides (front-end and backend),
 based on angularjs and nodejs.
 
 The communication will be based on websockets connections, to realize CRUDS operations.

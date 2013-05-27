@@ -1,37 +1,47 @@
 angular.module("directives", []).
-    directive("cdcolumn", function () {
+    directive("cdDatagrid", function () {
         return {
-            restrict: "E",
-            //replace : true,
-            scope   : {
-                text    : "@",
-                property: "="
+            restrict  : "E",
+            transclude: true,
+            template  : "<table>\n    <tr ng-transclude></tr>\n    <tr ng-repeat=\"record in data\">\n        <td ng-repeat=\"field in record\">{{field}}</td>\n    </tr>\n</table>",
+            scope     : {
+                data: "="
             },
-            template: "<span>{{text}}</span>"
-            //template: "<td>{{text}}</td>"
+            controller: ["$scope", "$element", "$attrs", "$transclude", function ($scope, $element, $attrs, $transclude) {
+                $scope.columns = [];
+                this.addHeader = function (header) {
+                    $scope.columns.push(header);
+                };
+            }],
+            link : function (scope, iElement, iAttrs) {
+                debugger
+            }
         };
     }).
-    directive("cdcolumns", function () {
+    directive("cdDatagridColumns", function () {
         return {
             restrict  : "E",
             //replace   : true,
             transclude: true,
             scope     : {},
             template  : "<div ng-transclude></div>"
-            //template  : "<tr ng-transclude></tr>"
+            //template  : "<tr ng-transclude></tr>"      //dont working! WTF!?   issue : https://github.com/angular/angular.js/issues/1459
         };
     }).
-    directive("cddatagrid", function () {
+    directive("cdDatagridColumn", function () {
         return {
-            restrict  : "E",
-            transclude: true,
-            scope     : {
-                data: "="
+            restrict: "E",
+            require : "^cdDatagrid",
+            //replace : true,
+            scope   : {
+                text    : "@",
+                property: "="
             },
-            template  : "<table>\n    <tr ng-transclude></tr>\n    <tr ng-repeat=\"record in data\">\n        <td ng-repeat=\"field in record\">{{field}}</td>\n    </tr>\n</table>",
-            compile   : function (tplEl, attr, transclude) {
-
-            }
+            link    : function (scope, element, attrs, cddatagridCtrl) {
+                cddatagridCtrl.addHeader(attrs.property);
+            },
+            template: "<span>{{text}}</span>"
+            //template: "<td>{{text}}</td>"  //dont working! WTF!?   issue: https://github.com/angular/angular.js/issues/1459
         };
     });
 

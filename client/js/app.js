@@ -1,4 +1,5 @@
 angular.module("app", [
-    "services.connectors"
+    "services.connectors",
+    "directives"
 ]);
 

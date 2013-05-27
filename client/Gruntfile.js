@@ -18,42 +18,40 @@ module.exports = function(grunt) {
                     dest: 'build/<%= pkg.name %>.js'
                 }]
             }
+        },
+        uglify: {
+            options: {
+                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
+            },
+            dist: {
+                files: {
+                    'build/<%= pkg.name %>.min.js': ['<%= concat.dist.files[0].dest %>']
+                }
+            }
+        },
+        //qunit: {
+        //    files: ['test/**/*.html']
+        //},
+        jshint: {
+            files: ['gruntfile.js', 'js/common/**/*.js', 'js/app.js', 'js/app/**/*.js', 'test/**/*.js'],
+            options: {
+                // options here to override JSHint defaults
+                globals: {
+                    console: true,
+                    module: true,
+                    document: true,
+                    angular : true
+                }
+            }
         }
-        //,
-//        uglify: {
-//            options: {
-//                banner: '/*! <%= pkg.name %> <%= grunt.template.today("dd-mm-yyyy") %> */\n'
-//            },
-//            dist: {
-//                files: {
-//                    'build/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
-//                }
-//            }
-//        },
-//        //qunit: {
-//        //    files: ['test/**/*.html']
-//        //},
-//        jshint: {
-//            files: ['gruntfile.js', 'js/**/*.js', 'test/**/*.js'],
-//            options: {
-//                // options here to override JSHint defaults
-//                globals: {
-//                    console: true,
-//                    module: true,
-//                    document: true,
-//                    angular : true
-//                }
-//            }
-//        }
-//        /*watch: {
-//            files: ['<%= jshint.files %>'],
-//            tasks: ['jshint', 'qunit']
-//        }*/
+        /*watch: {
+            files: ['<%= jshint.files %>'],
+            tasks: ['jshint', 'qunit']
+        }*/
     });
 
     //grunt.registerTask('test', ['jshint']);
 
-    //grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
-    grunt.registerTask('default', ['concat']);
+    grunt.registerTask('default', ['jshint', 'concat', 'uglify']);
 
 };
