@@ -1,6 +1,6 @@
 var UsuariosCtrl = angular.module("app")
     .controller("UsuariosCtrl", ["$scope", "websocket", function ($scope, websocket) {
-
+        "use strict";
         $scope.usuario = {};
         $scope.data = [];
 
@@ -23,9 +23,8 @@ var UsuariosCtrl = angular.module("app")
 
             websocket.on("usuarios/find", function (usuarios) {
                 console.log("Recibimos usuarios...");
-                $scope.$apply(function () {
-                    $scope.data = usuarios;
-                });
+                $scope.data = usuarios;
+                $scope.$apply();
             });
 
             websocket.on("usuarios/add", function (usuario) {

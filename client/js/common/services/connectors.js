@@ -1,5 +1,6 @@
 angular.module("services.connectors", [])
     .factory("websocket", function () {
+        "use strict";
         var that = this, connection = new WebSocket("ws://localhost:8888", "echo-protocol"),
             suscriptors = [], handleMessage, fireEvent;
 
