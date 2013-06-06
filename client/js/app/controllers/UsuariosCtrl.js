@@ -1,6 +1,7 @@
 var UsuariosCtrl = angular.module("app")
     .controller("UsuariosCtrl", ["$scope", "websocket", function ($scope, websocket) {
         "use strict";
+
         $scope.usuario = {};
         $scope.data = [];
 
@@ -16,6 +17,10 @@ var UsuariosCtrl = angular.module("app")
         $scope.save = function (usuario) {
             $scope.usuario = angular.copy(usuario);
             websocket.sendMessage("usuarios/add", usuario);
+        };
+
+        $scope.remove = function (record, rowIndex, colIndex) {
+            console.log("delete record " + JSON.stringify(record) + " in rowIndex: " + rowIndex + ". The index of the column with the action is " + colIndex);
         };
 
         websocket.on("connectionopen", function () {
