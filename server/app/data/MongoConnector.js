@@ -9,15 +9,15 @@ var DbConfig = require("./../config/database.json"),
 Server = mongo.Server;
 Db = mongo.Db;
 
-
 server = new Server(DbConfig.url, DbConfig.port, {auto_reconnect: true});
 db = new Db(DbConfig.dbName, server);
-
 
 exports.MongoConnector = {};
 
 exports.MongoConnector.getConnection = function () {
-    var d = Q.defer();
+    "use strict";
+    var d;
+    d = Q.defer();
 
     this.open()
         .then(this.authenticate)
@@ -29,7 +29,9 @@ exports.MongoConnector.getConnection = function () {
 };
 
 exports.MongoConnector.authenticate = function (client) {
-    var d = Q.defer();
+    "use strict";
+    var d;
+    d = Q.defer();
     client.authenticate(DbConfig.user, DbConfig.password, function (err, success) {
         if (success) {
             d.resolve(client);
@@ -41,7 +43,9 @@ exports.MongoConnector.authenticate = function (client) {
 };
 
 exports.MongoConnector.open = function () {
-    var d = Q.defer();
+    "use strict";
+    var d;
+    d = Q.defer();
     db.open(function (err, client) {
         if (err) {
             d.reject(err);

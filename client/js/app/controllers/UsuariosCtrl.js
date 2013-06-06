@@ -21,6 +21,7 @@ var UsuariosCtrl = angular.module("app")
 
         $scope.remove = function (record, rowIndex, colIndex) {
             console.log("delete record " + JSON.stringify(record) + " in rowIndex: " + rowIndex + ". The index of the column with the action is " + colIndex);
+            websocket.sendMessage("usuarios/remove", record["_id"]);
         };
 
         websocket.on("connectionopen", function () {
@@ -36,6 +37,10 @@ var UsuariosCtrl = angular.module("app")
                 $scope.$apply(function () {
                     $scope.data.push(usuario);
                 });
+            });
+
+            websocket.on("usuarios/remove", function (usuario) {
+                $scope.load();
             });
         });
     }]);

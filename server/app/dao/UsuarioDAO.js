@@ -1,8 +1,12 @@
 var MongoConnector = require('./../data/MongoConnector').MongoConnector,
-    Q = require('q');
+    Q = require('q'),
+    mongo = require('mongodb'),
+    BSON = mongo.BSONPure;
 
-exports.UsuarioDAO = (function () {
-    var find, addUser, doAddUser, doFind;
+exports.UsuarioDAO = function () {
+    "use strict";
+
+    var find, addUser, doAddUser, doFind, removeUserById, doRemoveUserById;
 
     doAddUser = function (client, data) {
         var d = Q.defer();
@@ -25,6 +29,38 @@ exports.UsuarioDAO = (function () {
             .then(function (client) {
                 //importante devolver la función que contiene la promesa
                 return doAddUser(client, data);
+            })
+            .then(function (savedData) {
+                d.resolve(savedData);
+            });
+
+        return d.promise;
+    };
+
+    doRemoveUserById = function (client, id) {
+        var d, objectId;
+
+        d = Q.defer();
+        objectId = new BSON.ObjectID(id);
+        client.collection('usuarios').remove({"_id": objectId}, function (error) {
+            if (error) {
+                d.reject(error);
+            } else {
+                client.close();
+                d.resolve(id);
+            }
+        });
+
+        return d.promise;
+    };
+
+    removeUserById = function (id) {
+        var d = Q.defer();
+
+        MongoConnector.getConnection()
+            .then(function (client) {
+                //importante devolver la función que contiene la promesa
+                return doRemoveUserById(client, id);
             })
             .then(function (savedData) {
                 d.resolve(savedData);
@@ -65,8 +101,8 @@ exports.UsuarioDAO = (function () {
     };
 
     return {
-        addUser: addUser,
-
-        find: find
+        addUser       : addUser,
+        find          : find,
+        removeUserById: removeUserById
     };
-})();
+}();

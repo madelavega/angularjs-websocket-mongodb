@@ -6,6 +6,7 @@ var UsuarioDAO = require('./../dao/UsuarioDAO').UsuarioDAO,
 
 function UsuarioMgr() {
     UsuarioMgr.super_.call(this);
+
     this.add = function (data) {
         var d = Q.defer();
         UsuarioDAO.addUser(data).then(function (savedData) {
@@ -22,12 +23,21 @@ function UsuarioMgr() {
         return d.promise;
     };
 
+    this.remove = function (id) {
+        var d = Q.defer();
+        UsuarioDAO.removeUserById(id).then(function (id) {
+            d.resolve({"usuarios/remove": id});
+        });
+        return d.promise;
+    };
+
 
     //contains the functions allowed and if they will do a broadcasting. All the functions declared in fn property
     //will be promises
     this.messages = {
         add : { fn: this.add, doBroadCasting: true},
-        find: { fn: this.find, doBroadCasting: false}
+        find: { fn: this.find, doBroadCasting: false},
+        remove : {fn: this.remove, doBroadCasting: true}
     };
 };
 
