@@ -95,7 +95,7 @@ angular.module("directives", []).
             defaultColumn: function (cdDatagridCtrl, text, tpl) {
                 cdDatagridCtrl.addColumn(text, tpl);
             },
-            action       : function (cdDatagridCtrl, action, text, tpl, scope) {
+            action       : function (cdDatagridCtrl, action, text, tpl) {
                 cdDatagridCtrl.addActionColumn(text, action, tpl);
             }
         };
@@ -171,7 +171,7 @@ angular.module("directives", []).
                     var type, ngEl, cdDataGrid;
                     cdDataGrid = scope.$parent;
                     if ((type = types[attrs.type]) !== undefined) {
-                        ngEl = angular.element($compile(attrs.tpl || type.tpl)(scope));
+                        ngEl = angular.element($compile(attrs.tpl.replace(/{(.*)}/, "{{record['$1']}}") || type.tpl)(scope));
                         if (type.executeAction) {
                             ngEl.bind("click", function () {
                                 var actionFn = cdDataGrid.$parent.executeAction(attrs.action);
@@ -180,7 +180,7 @@ angular.module("directives", []).
                         }
                         el.append(ngEl);
                     } else {
-                        ngEl = angular.element($compile(attrs.tpl || types.defaultCell.tpl)(scope));
+                        ngEl = angular.element($compile(attrs.tpl.replace(/{(.*)}/, "{{record['$1']}}") || types.defaultCell.tpl)(scope));
                         el.append(ngEl);
                     }
                 });
