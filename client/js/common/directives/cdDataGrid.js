@@ -5,7 +5,7 @@ angular.module("directives", []).
         return {
             restrict  : "E",
             transclude: true,
-            template  : '<table>\n    <tr ng-transclude>\n    </tr>\n    <tr ng-repeat="record in data">\n        <td ng-repeat="column in columns">\n            <cd-datagrid-cell text="{{column.text}}" data="{{record[column.dataProperty]}}" row-index="{{$parent.$index}}"\n                              col-index="{{$index}}"\n                              type="{{column.type}}" tpl="{{column.tpl}}" action="{{column.action}}">\n            </cd-datagrid-cell>\n        </td>\n    </tr>\n</table>',
+            template  : '<table>\n    <tr ng-transclude>\n    </tr>\n    <tr ng-repeat="record in data">\n        <td ng-repeat="column in columns">\n            <cd-datagrid-cell text="{{column.text}}" data="{{column.dataProperty}}" row-index="{{$parent.$index}}"\n                              col-index="{{$index}}" record="record"\n                              type="{{column.type}}" tpl="{{column.tpl}}" action="{{column.action}}">\n            </cd-datagrid-cell>\n        </td>\n    </tr>\n</table>',
             scope     : {
                 data: "="
             },
@@ -148,7 +148,7 @@ angular.module("directives", []).
                 executeAction: true
             },
             defaultCell: {
-                tpl          : "<span>{{data}}</span>",
+                tpl          : "<span>{{record[data]}}</span>",
                 executeAction: true
             }
         };
@@ -160,6 +160,7 @@ angular.module("directives", []).
                 type    : "@",
                 action  : "@",
                 data    : "@",
+                record  : "=",
                 text    : "@",
                 rowIndex: "@",
                 colIndex: "@"

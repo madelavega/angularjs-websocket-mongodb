@@ -1,5 +1,5 @@
 var UsuariosCtrl = angular.module("app")
-    .controller("UsuariosCtrl", ["$scope", "websocket", function ($scope, websocket) {
+    .controller("UsuariosCtrl", ["$scope", "websocket", "$filter", function ($scope, websocket, $filter) {
         "use strict";
 
         $scope.usuario = {};
@@ -39,8 +39,12 @@ var UsuariosCtrl = angular.module("app")
                 });
             });
 
-            websocket.on("usuarios/remove", function (usuario) {
-                $scope.load();
+            websocket.on("usuarios/remove", function (id) {
+                angular.forEach($filter("filter")($scope.data, {"_id": id}), function (usuario, index) {
+                    $scope.$apply(function () {
+                        $scope.data.splice($scope.data.indexOf(usuario), 1);
+                    });
+                });
             });
         });
     }]);
