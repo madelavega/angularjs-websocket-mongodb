@@ -1,7 +1,8 @@
-angular.module("services.connectors", [])
-    .factory("websocket", function () {
+/*global connecor : falce, angular: false, console: false, WebSocket: false*/
+connector
+    .factory("websocketconnector", function () {
         "use strict";
-        var that = this, connection = new WebSocket("ws://localhost:8888", "echo-protocol"),
+        var that = this, connection = new WebSocket("ws://localhost:8888"),
             suscriptors = [], handleMessage, fireEvent;
 
         connection.onopen = function () {

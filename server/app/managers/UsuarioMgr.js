@@ -5,6 +5,7 @@ var UsuarioDAO = require('./../dao/UsuarioDAO').UsuarioDAO,
 
 
 function UsuarioMgr() {
+    "use strict";
     UsuarioMgr.super_.call(this);
 
     this.add = function (data) {

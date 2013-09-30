@@ -1,3 +1,4 @@
+/*global angular: false, console: false*/
 angular.module("directives", []).
     directive("cdDatagrid", ["$compile", function ($compile) {
         "use strict";

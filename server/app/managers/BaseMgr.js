@@ -1,10 +1,10 @@
 var Q = require('q');
 
-function BaseMgr() {
-}
+function BaseMgr() {}
 
 //parse messages from websockets connection
 BaseMgr.prototype.handleMessage = function (messageType) {
+    "use strict";
     var message = messageType.split("/"), matchedProperty, messages = this.messages;
     message = message[message.length - 1];
 
