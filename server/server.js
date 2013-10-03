@@ -5,13 +5,9 @@ var express = require('express'),
     io = require('socket.io').listen(server),
     path = require('path'),
     Controller,
-    config;
+    serverConfig = require("./config.json");
 
-config = {
-    PORT: 8888
-};
-
-server.listen(config.PORT);
+server.listen(serverConfig.port);
 
 app.get('/', function (req, res) {
     "use strict";
