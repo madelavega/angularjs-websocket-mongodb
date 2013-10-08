@@ -22,7 +22,7 @@ Next, you need install the grunt client too as globally
     
 Now, you could build the application. Simply run this command:
 
-    grunt ---force
+    grunt --force
     
 ##Prepare server side
 
