@@ -22,30 +22,49 @@ var UsuariosCtrl = angular.module("app")
 
         $scope.remove = function (record, rowIndex, colIndex) {
             console.log("delete record " + JSON.stringify(record) + " in rowIndex: " + rowIndex + ". The index of the column with the action is " + colIndex);
-            connector.sendMessage("usuarios/remove", record["_id"]);
+            connector.sendMessage("usuarios/remove", record._id);
+        };
+
+        $scope.loadData = function (usuarios) {
+            $scope.data = usuarios;
+            $scope.$apply();
+        };
+
+        $scope.addUser = function (usuario) {
+            $scope.$apply(function () {
+                $scope.data.push(usuario);
+            });
+        };
+
+        $scope.removeUserById = function (id) {
+            angular.forEach(
+                $filter("filter")(
+                    $scope.data,
+                    {"_id": id}
+                ),
+                function (usuario) {
+                    $scope.$apply(function () {
+                        $scope.data.splice($scope.data.indexOf(usuario), 1);
+                    });
+                }
+            );
         };
 
         connector.on("connectionopen", function () {
+
             $scope.load();
 
             connector.on("usuarios/find", function (usuarios) {
                 console.log("Recibimos usuarios...");
-                $scope.data = usuarios;
-                $scope.$apply();
+                $scope.loadData(usuarios);
             });
 
             connector.on("usuarios/add", function (usuario) {
-                $scope.$apply(function () {
-                    $scope.data.push(usuario);
-                });
+                $scope.addUser(usuario);
             });
 
             connector.on("usuarios/remove", function (id) {
-                angular.forEach($filter("filter")($scope.data, {"_id": id}), function (usuario, index) {
-                    $scope.$apply(function () {
-                        $scope.data.splice($scope.data.indexOf(usuario), 1);
-                    });
-                });
+                $scope.removeUserById(id);
             });
         });
     }]);
