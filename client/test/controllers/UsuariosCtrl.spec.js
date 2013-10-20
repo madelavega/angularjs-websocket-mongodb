@@ -1,4 +1,4 @@
-/*global describe: false, it: false, beforeEach: false, expect: false*/
+/*global describe: false, it: false, beforeEach: false, expect: false, inject: false*/
 describe("Testing UsuariosCtrl", function () {
     "use strict";
 
