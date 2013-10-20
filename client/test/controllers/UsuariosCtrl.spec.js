@@ -6,7 +6,7 @@ describe("Testing UsuariosCtrl", function () {
 
     usuario = {
         id  : 1,
-        name: "mockName"
+        nombre: "mockName"
     };
 
     beforeEach(module("app"));
