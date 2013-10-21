@@ -6,6 +6,7 @@ module.exports = function (grunt) {
     grunt.loadNpmTasks("grunt-contrib-jasmine");
     grunt.loadNpmTasks("grunt-contrib-watch");
     grunt.loadNpmTasks("grunt-contrib-concat");
+    grunt.loadNpmTasks("grunt-contrib-stylus");
 
     grunt.initConfig({
         pkg    : grunt.file.readJSON("package.json"),
@@ -69,9 +70,23 @@ module.exports = function (grunt) {
                 }
             }
         },
+        stylus : {
+            compile: {
+                paths : ["resources/stylus"],
+                files : {
+                    "resources/css/app.css" : "resources/stylus/app.styl"
+                }
+            }
+        },
         watch  : {
-            files: "js/app/**/*.js",
-            tasks: ["jasmine"]
+            css: {
+                files: "resources/stylus/*.styl",
+                tasks: ["stylus"]
+            },
+            scripts : {
+                files: "js/app/**/*.js",
+                tasks: ["jasmine", "concat", "uglify"]
+            }
         }
     });
 

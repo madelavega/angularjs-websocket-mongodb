@@ -7,7 +7,7 @@ var UsuariosCtrl = angular.module("app")
         $scope.data = [];
 
         $scope.load = function () {
-            console.log("buscamos usuarios...");
+            console.log("Buscamos usuarios...");
             connector.sendMessage("usuarios/find", {});
         };
 

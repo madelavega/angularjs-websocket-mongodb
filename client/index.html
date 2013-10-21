@@ -1,24 +1,15 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="/js/vendor/angular/angular-1.1.5.js"></script>
-    <script src="/build/angularjs-websocket-mongodb.js"></script>
-    <style type="text/css">
-        form input.ng-invalid.ng-dirty {
-            background-color : red;
-        }
-
-        .css-form input.ng-valid.ng-dirty {
-            background-color : red;
-        }
-    </style>
-
+    <META HTTP-EQUIV="CONTENT-TYPE" CONTENT="text/html; charset=UTF-8">
+    <script src="http://localhost:8888/socket.io/socket.io.js"></script>
+    <script src="js/vendor/angular/angular-1.1.5.js"></script>
+    <script src="build/angularjs-websocket-mongodb.js"></script>
+    <link rel="stylesheet" href="resources/css/app.css" type="text/css"/>
 </head>
 <body ng-app="app">
 <div ng-controller="UsuariosCtrl">
-    <cd-datagrid data="data">
+    <cd-datagrid class="cd-datagrid" data="data">
         <cd-datagrid-columns>
             <cd-datagrid-column property="nombre" order="ASC" text="Nombre"></cd-datagrid-column>
             <cd-datagrid-column property="apellido" text="Apellido"></cd-datagrid-column>
