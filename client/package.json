@@ -1,6 +1,7 @@
 {
     "name"           : "angularjs-websocket-mongodb",
     "version"        : "1.0.0",
+    "wsServer"       : "ws://localhost:8888",
     "devDependencies": {
         "grunt"                : "~0.4.0rc2",
         "grunt-contrib-concat" : "~0.3.0",

@@ -2,7 +2,7 @@
 connector
     .factory("websocketconnector", function () {
         "use strict";
-        var that = this, connection = new WebSocket("ws://localhost:8888"),
+        var that = this, connection = new WebSocket('<%= pkg.wsServer %>'),
             suscriptors = [], handleMessage, fireEvent;
 
         connection.onopen = function () {

@@ -12,7 +12,8 @@ module.exports = function (grunt) {
         pkg    : grunt.file.readJSON("package.json"),
         concat : {
             options: {
-                separator: "\n"
+                separator: "\n",
+                process : true
             },
             dist   : {
                 files: [

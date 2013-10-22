@@ -2,7 +2,7 @@
 connector
     .factory("socketioconnector", function () {
         "use strict";
-        var that = this, connection = io.connect('ws://localhost:8888'),
+        var that = this, connection = io.connect('<%= pkg.wsServer %>'),
             suscriptors = [], handleMessage, fireEvent;
 
         handleMessage = function (data) {
