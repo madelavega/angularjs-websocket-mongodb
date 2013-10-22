@@ -1,4 +1,4 @@
-/*global connecor : falce, angular: false, console: false, WebSocket: false*/
+/*global connector : false, angular: false, console: false, WebSocket: false*/
 connector
     .factory("websocketconnector", function () {
         "use strict";
