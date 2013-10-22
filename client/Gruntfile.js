@@ -91,7 +91,7 @@ module.exports = function (grunt) {
         }
     });
 
-    grunt.registerTask("default", ["jshint", "concat", "uglify"]);
+    grunt.registerTask("default", ["jshint", "concat", "uglify", "stylus"]);
     grunt.registerTask("test", ["jshint", "jasmine"]);
-    grunt.registerTask("all", ["jshint", "jasmine", "concat", "uglify"]);
+    grunt.registerTask("all", ["jshint", "jasmine", "concat", "uglify", "stylus"]);
 };
